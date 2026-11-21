@@ -127,3 +127,22 @@ sudo systemctl start filebrowser
 >
 > - 该项目已停止维护，建议仅在内网使用，不要直接暴露到公网。
 > - DietPi 自动安装脚本（ID: 198）在遇到网络问题时可能会误停其他服务（如 lyrionmusicserver），如果使用脚本安装失败，请记得手动重启受影响的服务。
+
+## 📦 DEB 安装包（可选）
+
+除手动部署外，也可以直接使用预构建的安装包：[v1.0.0 Releases](https://github.com/cnkpjob/file-browser/releases/tag/v1.0.0) 中的 `filebrowser_2.63.23_amd64.deb`。
+
+```bash
+# 指定初始管理员密码
+sudo FB_PASSWORD='你的密码' dpkg -i ./filebrowser_2.63.23_amd64.deb
+
+# 或自动生成 16 位随机密码（写入 initial-password，权限 600）
+sudo dpkg -i ./filebrowser_2.63.23_amd64.deb
+cat /mnt/dietpi_userdata/filebrowser/initial-password
+```
+
+安装时会自动建立目录、注册 Systemd 服务、初始化数据库（管理根目录 `/music`、监听 `0.0.0.0:8084`、Token 有效期 `720h`）、创建管理员账号并启动服务。
+
+如需自行构建，仓库内提供 [`scripts/build-deb.sh`](scripts/build-deb.sh)，在 DietPi / Debian x86_64 上以 root 运行即可。
+
+> 卸载：`sudo dpkg -r filebrowser`（数据目录会保留）。
